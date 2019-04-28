@@ -25,8 +25,16 @@ class NewVistorTest(unittest.TestCase):
         time.sleep(1)
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(any(row.text == '1:Buy peacock feathers' for row in rows),"New to-do item did not appear in table")
-        self.fail('Finish the test!')
+        '''
+        self.assertTrue(
+            any(row.text == '1:Buy peacock feathers' for row in rows),
+            f"New to-do item did not appear in table.Content were:\n{table.text}"
+            )
+        '''
+        self.assertIn('Buy peacock feathers',[row.text for row in rows])
+        print(row.text)
+        time.sleep(10)
+        #self.fail('Finish the test!')
 #print(__name__)
 if __name__ =='__main__':
     unittest.main(warnings='ignore')
