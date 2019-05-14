@@ -3,6 +3,7 @@ from django.test import TestCase
 from lists.views import home_page
 from django.http import HttpRequest
 from lists.models import Item
+from django.contrib import messages
 # Create your tests here.
 '''
 class SmokeTest(TestCase):
@@ -30,6 +31,7 @@ class HomePageTest(TestCase):
     def test_uses_home_template(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response,'home.html')
+        #messages.success(self,'添加成功')
         
     def test_only_saves_item_when_necessary(self):
         response1=self.client.get('/')

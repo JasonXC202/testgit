@@ -5,13 +5,26 @@
 	 <body>
 	      <h1>Your To-Do list</h1>
 		  <form method="POST">
-		      <input id="id_new1" name="item_text" placeholder="Enter a to-do item"/>
-			  {% csrf_token %}
+		  {% csrf_token %}
+		      <input id="id_new1" name="item_text" placeholder="Enter a to-do item" style="height:30px;width:150px;">
+			  <button id="btn" style="height:30px;width:50px;">添加</button>
+			  <!--
+			  <span id="msg">{{ error }}</span>
+			  -->
 		  </form>
-		  <table id="id_list_table">
-		      {% for item in items %}
-			   <tr><td>{{ forloop.counter }}:{{ item.text }}</td></tr
-			  {% endfor %}
+		   <table cellspacing=0 height=200 width=200 border="1" id="id_list_table">
+			 <thead>
+              <tr>
+                <!--<th style="background-color:red" align="center">序号</th>-->
+                <th style="background-color:red" align="center">内容</th>
+              </tr>
+             </thead>
+			   {% for item in items %}
+			      <tr id="tr1">
+			        <!--<td align="center">{{ forloop.counter }}</td >-->
+				    <td align="center">{{ item.text }}</td>
+			      </tr>
+			   {% endfor %}
           </table>
 	 </body>
 </html>
