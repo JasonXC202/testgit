@@ -4,13 +4,10 @@
 	 </head>
 	 <body>
 	      <h1>Start a new To-Do list</h1>
-		  <form method="POST" action="/">
+		  <form method="POST" action="/lists/new">
 		  {% csrf_token %}
 		      <input id="id_new1" name="item_text" placeholder="Enter a to-do item" style="height:30px;width:150px;">
 			  <button id="btn" style="height:30px;width:50px;">添加</button>
-			  <!--
-			  <span id="msg">{{ error }}</span>
-			  -->
 		  </form>
 		   <table cellspacing=0 height=200 width=200 border="1" id="id_list_table">
 			 <thead>
