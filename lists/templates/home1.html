@@ -1,20 +1,13 @@
-{%  extends 'base.html' %}
-{% block header_text %}Your To-Do list{% endblock %}
-{% block form_action %}/lists/new{% endblock %}
-
-<!--
 <html>
      <head>
           <title>To-Do lists</title>
 	 </head>
 	 <body>
 	      <h1>Your To-Do list</h1>
-		  <form method="POST" action="/lists/new">
-			<p style ="text-align: center;">
+		  <form method="POST" action="/lists/test">
+		  {% csrf_token %}
 		      <input id="id_new1" name="item_text" placeholder="Enter a to-do item" style="height:30px;width:150px;">
 			  <button id="btn" style="height:30px;width:50px;">添加</button>
-			</p>
-		  {% csrf_token %}
 		  </form>
 		   <table cellspacing=0 height=200 width=200 border="1" id="id_list_table">
 			 <thead>
@@ -23,13 +16,12 @@
                 <th style="background-color:red" align="center">内容</th>
               </tr>
              </thead>
-			   {% for item in items %}
+			   {% for aa in showitems %}
 			      <tr id="tr1">
 			        <td align="center">{{ forloop.counter }}</td >
-				    <td align="center">{{ item.text }}</td>
+				    <td align="center">{{ aa.text }}</td>
 			      </tr>
 			   {% endfor %}
           </table>
 	 </body>
 </html>
--->

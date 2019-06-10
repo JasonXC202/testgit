@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 # Create your models here.
 
 class List(models.Model):
@@ -7,5 +7,6 @@ class List(models.Model):
     
 class Item(models.Model):
     text = models.TextField(default='')
-    list = models.ForeignKey(List,default=None)
+    logtime = models.DateTimeField('生成日期',default=timezone.now())
+    list = models.ForeignKey(List,related_name='item_list',default=None)
 
