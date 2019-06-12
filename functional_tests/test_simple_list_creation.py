@@ -5,53 +5,20 @@ from selenium.webdriver.common.keys import Keys
 from lists.models import Item
 import time
 from selenium.common.exceptions import WebDriverException
-import unittest
+import unittest,os
+from unittest import skip
+from .base import FunctionalTest
 MAX_WAIT = 5
-
-class NewVistorTest(StaticLiveServerTestCase):
-    def setUp(self):
-        self.browser = webdriver.Firefox()
-        
-    def tearDown(self):
-        self.browser.quit()
-        
-    def wait_for_row_in_list_table(self,column_text):
-        start_time = time.time()
-        #print(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
-        while True:
-            try:
-                table = self.browser.find_element_by_id('id_list_table')
-                trlist = table.find_elements_by_id('tr1')
-                tdlist = table.find_elements_by_tag_name('td')
-                self.assertIn(column_text,[row.text for row in tdlist])
-                return
-            except (AssertionError,WebDriverException) as e:
-                if time.time() - start_time > MAX_WAIT:
-                    raise e
-                time.sleep(0.5)
-                
+  
+class NewVistorTest(FunctionalTest):  
+          
     def show_table_cell_value(self):
         table = self.browser.find_element_by_id('id_list_table')
         trlist = table.find_elements_by_id('tr1') 
         for tr in trlist:
             text=tr.find_elements_by_tag_name("td")[1].text
-            print(text)
-    
-    def test_layout_and_styling(self):
-        #访问首页
-        self.browser.get(self.live_server_url)
-        self.browser.set_window_size(1024,768)
-        time.sleep(10)
-        
-        #输入框居中显示
-        inputbox = self.browser.find_element_by_id('id_new1')
-        print(inputbox.location['x'])
-        print(inputbox.location['y'])
-        print(inputbox.size['width'])
-        self.assertAlmostEqual(
-            inputbox.location['x'] + inputbox.size['width'] / 2 ,512,delta=10
-        )
-    '''           
+            print(text)       
+    '''          
     def test_can_start_a_list_and_retrieve_it_later(self):
         self.browser.get(self.live_server_url)
         self.assertIn('To-Do',self.browser.title)
