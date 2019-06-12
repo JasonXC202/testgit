@@ -2,19 +2,19 @@
 {% block header_text %}Start a new To-Do list{% endblock %}
 {% block form_action %}/lists/{{ list.id }}/add_item{% endblock %}
 {% block table %}
-	<table cellspacing=0 height=200 width=500 border="1" id="id_list_table">
+	<table id="id_list_table" class="table table-hover">
 			 <thead>
-              <tr>
-                <th style="background-color:red" align="center" width=50>序号</th>
-                <th style="background-color:red" align="center" width=200>内容</th>
-				<th style="background-color:red" align="center" width=200>时间</th>
+              <tr class="table table-bordered">
+                <th style="background-color:red" width=50>序号</th>
+                <th style="background-color:red" width=200>内容</th>
+				<th style="background-color:red" width=200>时间</th>
               </tr>
              </thead>
 			      {% for choice in list.item_list.all %}
-			      <tr id="tr1">
-			        <td align="center">{{ forloop.counter }}</td >
-				    <td id ="td1" align="center">{{ choice.text }}</td>
-					<td align="center">{{ choice.logtime|date:"Y-m-d H:i:s" }}</td>
+			      <tr id="tr1" class="table table-bordered">
+			        <td >{{ forloop.counter }}</td >
+				    <td id ="td1">{{ choice.text }}</td>
+					<td>{{ choice.logtime|date:"Y-m-d H:i:s" }}</td>
 			      </tr>
 			      {% endfor %}
 	</table>
