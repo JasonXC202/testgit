@@ -27,9 +27,20 @@ class FunctionalTest(StaticLiveServerTestCase):
             try:
                 table = self.browser.find_element_by_id('id_list_table')
                 trlist = table.find_elements_by_id('tr1')
-                tdlist = table.find_elements_by_tag_name('td')
+                tdlist = table.find_elements_by_id('td1')
                 self.assertIn(column_text,[row.text for row in tdlist])
                 return
+            except (AssertionError,WebDriverException) as e:
+                if time.time() - start_time > MAX_WAIT:
+                    raise e
+                time.sleep(0.5)
+                
+    def wait_for(self,fn):
+        start_time = time.time()
+        #print(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
+        while True:
+            try:
+                return fn()
             except (AssertionError,WebDriverException) as e:
                 if time.time() - start_time > MAX_WAIT:
                     raise e
