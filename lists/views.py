@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect,Http404
 from django.http import HttpResponse
 from lists.models import Item,List
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 
 # Create your views here.
 def get_html(self):
@@ -33,9 +34,16 @@ def view_list(self,list1_id):
 
 def new_list(self):
     #aa1 = Item.objects.all()
-    list_ = List.objects.create()
-    Item.objects.create(text=self.POST['item_text'],list = list_)
-    #return redirect('/lists/the-only-list-in-the-world/')
+    list1 = List.objects.create()
+    item = Item.objects.create(text=self.POST['item_text'],list = list1)
+    try:
+    #return redirect('/lists/the-only-list-in-the-world)
+        item.full_clean()
+        item.save()
+    except ValidationError:
+        list1.delete()
+        err1 = "You can't have an empty list item"
+        return render(self,'home.html',{'error':err1})
     return redirect(f'/lists/{list_.id}/')
     #return render(self,'list.html',{'items':aa1})
     
