@@ -23,17 +23,22 @@ def home_page(self):
     return render(self,'home.html')
 
 def view_list(self,list1_id):
-    try:
-        list1 = List.objects.get(id=list1_id)
-        if self.method == 'POST':
-            Item.objects.create(text=self.POST['item_text'],list=list1)
-            return redirect(f'/lists/{list1.id}/')
-    except List.DoesNotExist:
-        raise Http404("HTTP Status 404 - Not Found")  
+    list_ = List.objects.get(id=list1_id)
+    err1= None
+    if self.method == 'POST':
+        try:
+            item = Item.objects.create(text=self.POST['item_text'],list = list_)
+            item.full_clean()
+            item.save()
+            return redirect(f'/lists/{list_.id}/')
+        except ValidationError:
+            err1 = "You can't have an empty list item" 
+    #except List.DoesNotExist:
+        #raise Http404("HTTP Status 404 - Not Found")  
     #aa1=Item.objects.filter(list=list_)
     #aa1 = Item.objects.all()
     #return render(self,'list.html',{'test':aa1})
-    return render(self,'list.html',{'list':list1})
+    return render(self,'list.html',{'list':list_,'error':err1})
 
 def new_list(self):
     #aa1 = Item.objects.all()
@@ -50,13 +55,13 @@ def new_list(self):
     return redirect(f'/lists/{list1.id}/')
     #return render(self,'list.html',{'items':aa1})
     
-'''    
+    
 def add_item(self,list1_id):
     list_ = List.objects.get(id=list1_id) 
     Item.objects.create(text=self.POST['item_text'],list=list_)
     #return render(self,'list.html',{'list':list_})
     return redirect(f'/lists/{list_.id}/')
-'''    
+    
 def other_list(self,list1_id):
     list_ = List.objects.get(id=list1_id) 
     Item.objects.create(text=self.POST['item_text'],list=list_)
