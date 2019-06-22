@@ -17,8 +17,8 @@ class NewVistorTest(FunctionalTest):
         trlist = table.find_elements_by_id('tr1') 
         for tr in trlist:
             text=tr.find_elements_by_tag_name("td")[1].text
-            print(text)       
-    '''          
+            #print(text)       
+              
     def test_can_start_a_list_and_retrieve_it_later(self):
         self.browser.get(self.live_server_url)
         self.assertIn('To-Do',self.browser.title)
@@ -71,6 +71,7 @@ class NewVistorTest(FunctionalTest):
         self.assertNotIn('Buy peacock feathers1', page_text1)
         self.assertIn('Buy milk', page_text1)
         
+    '''  
     table = self.browser.find_element_by_id('id_list_table')
         trlist = self.browser.find_elements_by_tag_name('tr')
         for row in trlist:
@@ -90,7 +91,7 @@ class NewVistorTest(FunctionalTest):
             [row.text for row in rows]
         )
         time.sleep(3)
-        '''
+    '''
         #self.fail('Finish the test!')
 #print(__name__)
 #if __name__ =='__main__':

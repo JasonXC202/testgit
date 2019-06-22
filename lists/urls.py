@@ -22,6 +22,6 @@ urlpatterns = [
     url(r'^(\d+)/other$',views.other_list,name='new_list'),
     url(r'^the-only-list-in-the-world/$',views.view_list,name='view_list'),
     url(r'^(\d+)/$',views.view_list,name='view_list'),
-    url(r'^(\d+)/add_item$',views.add_item,name='add_item'),
+    #url(r'^(\d+)/add_item$',views.add_item,name='add_item'),
     url(r'^test$',views.get_html,name='home1'),
 ]
