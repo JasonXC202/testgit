@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect,Http404
 from django.http import HttpResponse
 from lists.models import Item,List
+from lists.forms import ItemForm
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 
@@ -20,7 +21,7 @@ def home_page(self):
         #new_item_text = ""
         #aa = Item.objects.all()
         #messages.success(self,'添加成功')
-    return render(self,'home.html')
+    return render(self,'home.html',{'form':ItemForm()})
 
 def view_list(self,list1_id):
     list_ = List.objects.get(id=list1_id)

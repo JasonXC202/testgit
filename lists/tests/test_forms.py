@@ -6,7 +6,7 @@ class ItemFormTest(TestCase):
 
     def test_from_renders_item_text_input(self):
         form = ItemForm()
-        form.as_p()
+        print(form.as_p())
         
     def test_form_item_input_has_placeholder_and_css_classes(self):
         form = ItemForm()

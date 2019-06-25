@@ -3,6 +3,7 @@ from django.test import TestCase,LiveServerTestCase
 from lists.views import home_page,get_html
 from django.http import HttpRequest
 from lists.models import Item,List
+from lists.forms import ItemForm
 from django.contrib import messages
 from selenium import webdriver
 import time
@@ -167,7 +168,7 @@ class ItemModelTest(TestCase):
         second_saved_item = saved_items[1]
         self.assertEqual(first_saved_item.text,'The first (ever) list item')
         self.assertEqual(second_saved_item.text,'Item the second')
-
+'''
 class HomePageTest(TestCase):
     def test_uses_home_template(self):
         response = self.client.get('/')
@@ -177,7 +178,13 @@ class HomePageTest(TestCase):
     #def test_only_saves_item_when_necessary(self):
       #  response1=self.client.get('/')
         #self.assertEqual(Item.objects.count(),0)
-    
+        
+    #验证表单类型是否正确   
+    def test_home_page_uses_item_form(self):
+        response = self.client.get('/')
+        #print(response.content.decode())
+        self.assertIsInstance(response.context['form'],ItemForm)
+'''  
 class ListAndItemModelsTest(TestCase):
     def test_saving_and_retrieving_items(self):
         list_ = List()
