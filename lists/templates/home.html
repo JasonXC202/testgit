@@ -1,7 +1,7 @@
 {%  extends 'base.html' %}
 {% block header_text %}Your To-Do list{% endblock %}
-{% block form_action %}/lists/new{% endblock %}
-
+<!--url反向解析-->
+{% block form_action %}{% url 'new_list1' %}{% endblock %}
 <!--
 <html>
      <head>

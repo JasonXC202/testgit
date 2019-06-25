@@ -30,8 +30,10 @@ def view_list(self,list1_id):
             item = Item.objects.create(text=self.POST['item_text'],list = list_)
             item.full_clean()
             item.save()
-            return redirect(f'/lists/{list_.id}/')
+            #return redirect(f'/lists/{list_.id}/')
+            return redirect(list_)
         except ValidationError:
+            #list_.delete()
             err1 = "You can't have an empty list item" 
     #except List.DoesNotExist:
         #raise Http404("HTTP Status 404 - Not Found")  
@@ -52,7 +54,9 @@ def new_list(self):
         list1.delete()
         err1 = "You can't have an empty list item"
         return render(self,'home.html',{'error':err1})
-    return redirect(f'/lists/{list1.id}/')
+    #return redirect(f'/lists/{list1.id}/')
+    #return redirect('view_list1',list1.id)
+    return redirect(list1)
     #return render(self,'list.html',{'items':aa1})
     
     
