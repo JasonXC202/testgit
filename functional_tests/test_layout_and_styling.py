@@ -19,7 +19,7 @@ class LayoutAndStylingTest(FunctionalTest):
         time.sleep(10)
         
         #输入框居中显示
-        inputbox = self.browser.find_element_by_id('id_new1')
+        inputbox = self.get_item_input_box()
         #print(inputbox.location['x'])
         #print(inputbox.location['y'])
         #print(inputbox.size['width'])

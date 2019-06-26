@@ -14,11 +14,11 @@ def home_page(self):
     #try:
     #return HttpResponse('<html><title>To-Do lists</title></html>')
         #if self.method == 'POST':
-            #new_item_text = self.POST['item_text']
-            #Item.objects.create(text=new_item_text)
+            #new_text = self.POST['text']
+            #Item.objects.create(text=new_text)
            # return redirect('/lists/the-only-list-in-the-world/')
     #else:
-        #new_item_text = ""
+        #new_text = ""
         #aa = Item.objects.all()
         #messages.success(self,'添加成功')
     return render(self,'home.html',{'form':ItemForm()})
@@ -28,7 +28,7 @@ def view_list(self,list1_id):
     err1= None
     if self.method == 'POST':
         try:
-            item = Item.objects.create(text=self.POST['item_text'],list = list_)
+            item = Item.objects.create(text=self.POST['text'],list = list_)
             item.full_clean()
             item.save()
             #return redirect(f'/lists/{list_.id}/')
@@ -46,7 +46,7 @@ def view_list(self,list1_id):
 def new_list(self):
     #aa1 = Item.objects.all()
     list1 = List.objects.create()
-    item = Item.objects.create(text=self.POST['item_text'],list = list1)
+    item = Item.objects.create(text=self.POST['text'],list = list1)
     try:
     #return redirect('/lists/the-only-list-in-the-world)
         item.full_clean()
@@ -63,13 +63,13 @@ def new_list(self):
     
 def add_item(self,list1_id):
     list_ = List.objects.get(id=list1_id) 
-    Item.objects.create(text=self.POST['item_text'],list=list_)
+    Item.objects.create(text=self.POST['text'],list=list_)
     #return render(self,'list.html',{'list':list_})
     return redirect(f'/lists/{list_.id}/')
     
 def other_list(self,list1_id):
     list_ = List.objects.get(id=list1_id) 
-    Item.objects.create(text=self.POST['item_text'],list=list_)
+    Item.objects.create(text=self.POST['text'],list=list_)
     #aa1 = Item.objects.filter(list=list_)
     #list_ = List.objects.create()
     return render(self,'list.html',{'list':list_})
