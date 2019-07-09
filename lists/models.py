@@ -1,6 +1,7 @@
 from django.db import models
 from  django.utils import  timezone
 from django.core.urlresolvers import reverse
+#from django.urls import resolvers
 
 # Create your models here.
 

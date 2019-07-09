@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,Http404
 from django.http import HttpResponse
 from lists.models import Item,List
-from lists.forms import ItemForm
+from lists.forms import ItemForm,EMPTY_ITEM_ERRORS
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 
@@ -23,9 +23,12 @@ def home_page(self):
         #messages.success(self,'添加成功')
     return render(self,'home.html',{'form':ItemForm()})
 
+#旧的view_list方法
+'''  
 def view_list(self,list1_id):
     list_ = List.objects.get(id=list1_id)
     err1= None
+    form =ItemForm()
     if self.method == 'POST':
         try:
             item = Item.objects.create(text=self.POST['text'],list = list_)
@@ -41,8 +44,23 @@ def view_list(self,list1_id):
     #aa1=Item.objects.filter(list=list_)
     #aa1 = Item.objects.all()
     #return render(self,'list.html',{'test':aa1})
-    return render(self,'list.html',{'list':list_,'error':err1})
+    return render(self,'list.html',{'list':list_,'form':form,'error':err1})
+'''
 
+#form类的view_list方法
+def view_list(self, list1_id):
+    list_ = List.objects.get(id=list1_id)
+    form = ItemForm()
+    if self.method == 'POST':
+        form = ItemForm(data=self.POST)   
+        if form.is_valid():
+            Item.objects.create(text=self.POST['text'], list=list_)
+            return redirect(list_)
+    return render(self, 'list.html', {'list': list_, 'form': form})
+
+
+#旧的new_list方法
+'''
 def new_list(self):
     #aa1 = Item.objects.all()
     list1 = List.objects.create()
@@ -59,8 +77,18 @@ def new_list(self):
     #return redirect('view_list1',list1.id)
     return redirect(list1)
     #return render(self,'list.html',{'items':aa1})
-    
-    
+'''  
+  
+#form类的new_list方法
+def new_list(self):
+    form = ItemForm(data=self.POST)
+    if form.is_valid():
+        list1 = List.objects.create()
+        Item.objects.create(text=self.POST['text'],list=list1)
+        return redirect(list1)
+    else:
+        return render(self,'home.html',{"form":form})
+ 
 def add_item(self,list1_id):
     list_ = List.objects.get(id=list1_id) 
     Item.objects.create(text=self.POST['text'],list=list_)
