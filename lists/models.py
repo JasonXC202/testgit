@@ -12,7 +12,7 @@ class List(models.Model):
 	
 class Item(models.Model):
 	text = models.TextField(blank=False,default='')
-	logtime = models.DateTimeField('create_time',default=timezone.now)
+	logtime = models.DateTimeField(name='create_time',default=timezone.now)
 	list = models.ForeignKey(List,related_name='item_list',default=None)
 
 	class Meta:

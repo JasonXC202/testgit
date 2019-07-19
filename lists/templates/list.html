@@ -14,7 +14,7 @@
 			      <tr id="tr1" class="table table-bordered">
 			        <td >{{ forloop.counter }}</td >
 				    <td id ="td1">{{ choice.text }}</td>
-					<td>{{ choice.logtime|date:"Y-m-d H:i:s" }}</td>
+					<td>{{ choice.create_time|date:"Y-m-d H:i:s" }}</td>
 			      </tr>
 			      {% endfor %}
 	</table>

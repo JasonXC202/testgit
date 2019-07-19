@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,Http404
 from django.http import HttpResponse
 from lists.models import Item,List
-from lists.forms import ItemForm,EMPTY_ITEM_ERRORS
+from lists.forms import ItemForm,EMPTY_ITEM_ERROR,ExistingListItemForms,DUPLICATE_ITEM_ERROR
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 
@@ -50,14 +50,14 @@ def view_list(self,list1_id):
 #form类的view_list方法
 def view_list(self, list1_id):
 	list1 = List.objects.get(id=list1_id)
-	form = ItemForm()
+	form_list = ExistingListItemForms(for_list=list1)
 	if self.method == 'POST':
-		form = ItemForm(data=self.POST)	  
-		if form.is_valid():
+		form_list = ExistingListItemForms(for_list=list1,data=self.POST)	  
+		if form_list.is_valid():
 			#Item.objects.create(text=self.POST['text'], list=list_)
-			form.save(for_list=list1)
+			form_list.save(for_list=list1)
 			return redirect(list1)
-	return render(self, 'list.html', {'list': list1, 'form': form})
+	return render(self, 'list.html', {'list': list1, 'form': form_list})
 
 
 #旧的new_list方法
@@ -82,14 +82,19 @@ def new_list(self):
   
 #form类的new_list方法
 def new_list(self):
-	form = ItemForm(data=self.POST)
-	if form.is_valid():
+	form_list = ItemForm(data=self.POST)
+	if form_list.is_valid():
 		list1 = List.objects.create()
+		'''
+		instance = form.save(commit=False)
+		instance.created_by = self.list
 		#Item.objects.create(text=self.POST['text'],list=list1)
-		form.save(for_list=list1)
+		instance.save()
+		'''
+		form_list.save(for_list=list1)
 		return redirect(list1)
 	else:
-		return render(self,'home.html',{"form":form})
+		return render(self,'home.html',{"form":form_list})
  
 def add_item(self,list1_id):
 	list_ = List.objects.get(id=list1_id) 

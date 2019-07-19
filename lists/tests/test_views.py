@@ -3,11 +3,12 @@ from django.test import TestCase,LiveServerTestCase
 from lists.views import home_page,get_html
 from django.http import HttpRequest
 from lists.models import Item,List
-from lists.forms import ItemForm,EMPTY_ITEM_ERRORS
+from lists.forms import ItemForm,EMPTY_ITEM_ERROR,ExistingListItemForms,DUPLICATE_ITEM_ERROR
 from django.contrib import messages
 from selenium import webdriver
 import time
 from  django.utils.html import escape
+from unittest import skip
 
 # Create your tests here.
 class ListViewTest(TestCase):
@@ -145,13 +146,13 @@ class ListViewTest(TestCase):
 	def test_validation_errors_are_shown_on_home_page(self):
 		response = self.client.post(f'/lists/new',data={'text':''})
 		#print(response.content.decode())
-		self.assertContains(response,escape(EMPTY_ITEM_ERRORS))
+		self.assertContains(response,escape(EMPTY_ITEM_ERROR))
 	
 	#有验证错误，把表单对象传入模板
 	def test_for_invalid_input_passes_form_to_template(self):
 		response = self.client.post(f'/lists/new',data={'text':''})
 		print(response.content.decode())
-		self.assertIsInstance(response.context['form'],ItemForm)
+		self.assertIsInstance(response.context['form'],ExistingListItemFormss)
 	
 	def test_invalid_list_items_arent_saved(self):
 		response = self.client.post(f'/lists/new',data={'text':''})
@@ -160,10 +161,12 @@ class ListViewTest(TestCase):
 		self.assertEqual(Item.objects.count(),0)
 	
 	#测试待办视图是否使用表单
+	
 	def test_displays_item_form(self):
 		list1=List.objects.create()
 		response=self.client.get(f'/lists/{list1.id}/')
-		self.assertIsInstance(response.context['form'],ItemForm)
+		#print(response.content.decode())
+		self.assertIsInstance(response.context['form'],ExistingListItemForms)
 		self.assertContains(response,'name="text"')
 	
 	#分解测试，测试内容过多
@@ -182,7 +185,7 @@ class ListViewTest(TestCase):
 	def post_valid_input(self):
 		list1 = List.objects.create()
 		response = self.client.post(f'/lists/{list1.id}/',data={'text':'test sucess value1'})
-		self.assertEqual(response.status_code,200)
+		#self.assertEqual(response.status_code,200)
 		return response
 		
 	#显示列表清单数据
@@ -190,8 +193,8 @@ class ListViewTest(TestCase):
 		self.post_valid_input()
 		list1=List.objects.first()
 		response1 = self.client.get(f'/lists/{list1.id}/')
-		#print(response.content.decode())
-		self.assertContains(response1,'4')
+		print(response1.content.decode())
+		self.assertContains(response1,'5555')
 	 
 	#列表清单提交空数据	   
 	def post_invalid_input(self):
@@ -214,9 +217,20 @@ class ListViewTest(TestCase):
 		
 	def test_for_invalid_input_shows_error_on_page(self):
 		response = self.post_invalid_input()
-		self.assertContains(response, escape(EMPTY_ITEM_ERRORS)) 
-	
+		self.assertContains(response, escape(EMPTY_ITEM_ERROR)) 
 		
+	
+	def test_duplicate_item_validation_errors_end_up_on_lists_page(self):
+		list1 = List.objects.create()
+		item1 = Item.objects.create(list=list1,text='textey')
+		response = self.client.post(
+			f'/lists/{list1.id}/',
+			data={'text':'textey'}
+		)
+		expected_error = escape("You've already got this in your list")
+		self.assertContains(response, expected_error)
+		self.assertTemplateUsed(response, 'list.html')
+		self.assertEqual(Item.objects.all().count(), 1)
 '''
 class SmokeTest(TestCase):
 	def test_bad_maths(self):
